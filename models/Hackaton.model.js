@@ -3,34 +3,30 @@ const comunidadesAutonomas = require("../utils/comunidades.js");
 const tecnologias = require("../utils/tecnologias.js");
 
 // TODO: Please make sure you edit the User model to whatever makes sense in this case
-const userSchema = new Schema({
-  email: {
+const hackatonSchema = new Schema({
+  title: {
     type: String,
     required: true,
     unique: true,
-    lowercase: true,
-    trim: true,
   },
 
-  password: {
+  date: {
     type: String,
     required: true,
-  },
-
-  username: {
-    type: String,
-    trim: true,
-    required: true,
-    unique: true,
-  },
-
-  profilePhoto: {
-    type: String,
   },
 
   comunidadAutonoma: {
     type: String,
+    required: true,
     enum: comunidadesAutonomas,
+  },
+
+  photo: {
+    type: String,
+  },
+
+  description: {
+    type: String,
   },
 
   tech: [
@@ -40,19 +36,12 @@ const userSchema = new Schema({
     },
   ],
 
-  hackaton: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Hackaton",
-    },
-  ],
-
-  role: {
-    type: String,
-    enum: ["user", "admin", "company"],
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "user",
   },
 });
 
-const User = model("User", userSchema);
+const Hackaton = model("Hackaton", hackatonSchema);
 
-module.exports = User;
+module.exports = Hackaton;
