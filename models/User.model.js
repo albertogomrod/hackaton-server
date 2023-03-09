@@ -1,4 +1,4 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model, mongoose } = require("mongoose");
 const comunidadesAutonomas = require("../utils/comunidades.js");
 const tecnologias = require("../utils/tecnologias.js");
 

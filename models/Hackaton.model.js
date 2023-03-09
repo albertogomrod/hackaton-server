@@ -40,6 +40,8 @@ const hackatonSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "user",
   },
+
+  timestamp: true
 });
 
 const Hackaton = model("Hackaton", hackatonSchema);
