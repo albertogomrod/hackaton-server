@@ -18,4 +18,4 @@ const comunidadesAutonomas = [
   'Región de Murcia'
 ];
 
-module.export = comunidadesAutonomas
+module.exports = comunidadesAutonomas

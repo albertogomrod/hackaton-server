@@ -21,4 +21,4 @@ const tecnologias = [
     'CSS'
   ];
 
-module.export= tecnologias
+module.exports= tecnologias

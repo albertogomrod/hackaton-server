@@ -48,8 +48,8 @@ router.post("/signup", async (req, res, next) => {
     const hashPassword = await bcrypt.hash(password, salt);
 
     await User.create({
-        email: email,
-        username: username,
+        email,
+        username,
         password: hashPassword
     })
     res.status(201).json("Usuario creado");
@@ -82,7 +82,7 @@ router.post("/login", async(req,res,next)=>{
         const payload = {
           _id: foundUser._id,
           username: foundUser.username,
-          // Si tuviesemos sistemas de roles, podrían ir en el payload
+          role: foundUser.role
         };
     
         // generamos el token
