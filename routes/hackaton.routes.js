@@ -2,12 +2,13 @@ const router = require("express").Router();
 const isAuthenticated = require("../middlewares/auth.middlewares.js");
 const Hackaton = require("../models/Hackaton.model.js");
 const isCompany = require("../middlewares/company.middlewares.js")
+const User = require("../models/User.model.js");
 
 // HACKATONES
 
-// POST "/api/hackaton/create" => Crear nuevos hackatones. Hackaton.create()
+// POST "/api/hackaton/create" => Crear nuevos hackatones.
 router.post("/create", isAuthenticated, isCompany, async (req, res, next) => {
-  const { title, date, comunidadAutonoma, photo, description, tech } = req.body;
+  const { title, date, comunidadAutonoma, photo, description, tech, level } = req.body;
 
   try {
     const response = await Hackaton.create({
@@ -28,7 +29,7 @@ router.post("/create", isAuthenticated, isCompany, async (req, res, next) => {
   }
 });
 
-// PATCH "/api/hackaton/edit/:hackatonId" => Editar hackatones. findByIdAndUpdate()
+// PATCH "/api/hackaton/edit/:hackatonId" => Editar hackatones.
 
 router.patch("/edit/:hackatonId", isAuthenticated, isCompany, async (req, res, next) => {
   const { hackatonId } = req.params;
@@ -64,12 +65,25 @@ router.delete("/delete/:hackatonId", isAuthenticated, isCompany, async (req, res
   }
 });
 
-// GET "/api/hackaton/details/:hackatonId" => Renderiza un solo hackaton. findOneById()
+// GET "/api/hackaton/details/:hackatonId" => Renderiza un solo hackaton.
 router.get("/details/:hackatonId", isAuthenticated, async (req, res, next) => {
   const { hackatonId } = req.params;
 
   try {
     const response = await Hackaton.findById(hackatonId);
+    res.json(response);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// GET "/api/hackaton/cercaDeTi" => Renderiza los hackatones que están en la misma C.A. del usuario.
+router.get("/cercaDeTi", isAuthenticated, async (req, res, next) => {
+  
+  try {
+    const foundUser = await User.findById(req.payload._id);
+    console.log(foundUser)
+    const response = await Hackaton.find({comunidadAutonoma: foundUser.comunidadAutonoma})
     res.json(response);
   } catch (error) {
     next(error);
