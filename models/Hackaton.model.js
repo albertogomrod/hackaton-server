@@ -34,6 +34,11 @@ const hackatonSchema = new Schema(
       enum: tecnologias,
     },
 
+    level: {
+      type: String,
+      enum: ["Principiantes", "Junior", "Semi-senior", "Senior" ],
+    },
+
     owner: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "user",

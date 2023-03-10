@@ -17,6 +17,7 @@ router.post("/create", isAuthenticated, isCompany, async (req, res, next) => {
       photo,
       description,
       tech,
+      level,
       owner: req.payload._id,
     });
 
@@ -31,7 +32,7 @@ router.post("/create", isAuthenticated, isCompany, async (req, res, next) => {
 
 router.patch("/edit/:hackatonId", isAuthenticated, isCompany, async (req, res, next) => {
   const { hackatonId } = req.params;
-  const { title, date, comunidadAutonoma, photo, description, tech } = req.body;
+  const { title, date, comunidadAutonoma, photo, description, tech,level } = req.body;
 
   try {
     await Hackaton.findByIdAndUpdate(hackatonId, {
@@ -41,6 +42,7 @@ router.patch("/edit/:hackatonId", isAuthenticated, isCompany, async (req, res, n
       photo,
       description,
       tech,
+      level,
     });
 
     res.json("todo bien, documento actualizado");
