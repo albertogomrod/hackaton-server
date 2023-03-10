@@ -17,15 +17,20 @@ router.get("/", isAuthenticated, async (req, res, next) => {
 });
 
 // PATH "/api/profile/edit/:id" => Actualiza perfil de usuario findByIdAndUpdate()
-router.patch("/edit/:id", isAuthenticated, async (req, res, next) => {
-  const { id } = req.params;
-  const {username, email, profilephoto, comunidadesAutonomas, password, tech} = req.body;
+router.patch("/edit", isAuthenticated, async (req, res, next) => {
+  const {
+    username,
+    email,
+    profilephoto,
+    comunidadesAutonomas,
+    password,
+    tech,
+  } = req.body;
   try {
-
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(password, salt);
 
-    await User.findByIdAndUpdate(id, {
+    await User.findByIdAndUpdate(req.payload._id, {
       username,
       email,
       profilephoto,
@@ -41,11 +46,10 @@ router.patch("/edit/:id", isAuthenticated, async (req, res, next) => {
 
 // DELETE "/api/profile/delete/:id" => Elimina un perfil de usuario. findByIdAndDelete()
 
-router.delete("/delete/:id", isAuthenticated, async (req, res, next) => {
-  const { id } = req.params;
+router.delete("/delete", isAuthenticated, async (req, res, next) => {
   try {
-    await User.findByIdAndDelete(id)
-    res.json("Usuario borrado")
+    await User.findByIdAndDelete(req.payload._id);
+    res.json("Usuario borrado");
   } catch (error) {
     next(error);
   }

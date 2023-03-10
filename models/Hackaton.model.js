@@ -36,7 +36,7 @@ const hackatonSchema = new Schema(
 
     level: {
       type: String,
-      enum: ["Principiantes", "Junior", "Semi-senior", "Senior" ],
+      enum: ["Principiante", "Junior", "Semi-senior", "Senior" ],
     },
 
     owner: {
