@@ -7,7 +7,7 @@ const bcrypt = require("bcryptjs");
 
 // GET "/api/profile/:id" => Renderiza un perfil de usuario. findById()
 
-router.get("/:id", isAuthenticated, async (req, res, next) => {
+router.get("/", isAuthenticated, async (req, res, next) => {
   try {
     const response = await User.findById(req.payload._id);
     res.status(200).json(response);
