@@ -1,8 +1,8 @@
 const { expressjwt } = require("express-jwt");
 
 const isCompany = (req, res, next) => {
-    if(req.payload !== company) {
-        res.redirect("/")
+    if(req.payload.role !== "company") {
+        return null
     } else {
         next()
     }
