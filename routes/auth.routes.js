@@ -7,7 +7,7 @@ const router = require("express").Router();
 
 //POST "/api/auth/signup"=> Registrar al usuario en la BBDD
 router.post("/signup", async (req, res, next) => {
-  const { email, password, username, comunidadAutonoma } = req.body;
+  const { email, password, username, comunidadAutonoma, level, role } = req.body;
 
   // VALIDACIONES
   if (!email || !password) {
@@ -51,7 +51,9 @@ router.post("/signup", async (req, res, next) => {
         email,
         username,
         password: hashPassword,
-        comunidadAutonoma
+        comunidadAutonoma,
+        level,
+        role
     })
     res.status(201).json("Usuario creado");
   } catch (error) {

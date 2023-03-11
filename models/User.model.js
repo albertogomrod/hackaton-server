@@ -1,6 +1,7 @@
 const { Schema, model, mongoose } = require("mongoose");
 const comunidadesAutonomas = require("../utils/comunidades.js");
 const tecnologias = require("../utils/tecnologias.js");
+const nivel = require("../utils/nivel")
 
 // TODO: Please make sure you edit the User model to whatever makes sense in this case
 const userSchema = new Schema({
@@ -40,6 +41,11 @@ const userSchema = new Schema({
     },
   ],
 
+  level: {
+    type: String,
+    enum: nivel,
+  },
+
   hackaton: [
     {
       type: mongoose.Schema.Types.ObjectId,
@@ -49,8 +55,8 @@ const userSchema = new Schema({
 
   role: {
     type: String,
-    enum: ["user", "admin", "company"],
-    default: "user",
+    enum: ["normal", "admin", "company"],
+    default: "normal",
   },
 });
 
