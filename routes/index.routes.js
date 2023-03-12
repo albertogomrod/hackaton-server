@@ -19,7 +19,7 @@ router.use("/hackaton", hackatonRoutes);
 const tutorialRoutes = require("./tutorial.routes.js");
 router.use("/tutorial", tutorialRoutes);
 
-const uploadRoutes = require("./upload.routes");
-router.use("/upload", uploadRoutes);
+// const uploadRoutes = require("./upload.routes");
+// router.use("/upload", uploadRoutes);
 
 module.exports = router;
