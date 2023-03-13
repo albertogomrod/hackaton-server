@@ -2,9 +2,10 @@ const router = require("express").Router();
 const isAuthenticated = require("../middlewares/auth.middlewares");
 const User = require("../models/User.model.js");
 const Hackaton = require("../models/Hackaton.model.js");
+const Tutorial= require("../models/Tutorial.model")
 const bcrypt = require("bcryptjs");
 const isCompany= require("../middlewares/company.middlewares")
-
+const isAdmin= require("../middlewares/admin.middlewares")
 // PROFILE
 
 // GET "/api/profile/:id" => Renderiza un perfil de usuario. findById()
@@ -68,5 +69,20 @@ router.get("/hackaton-list-company", isAuthenticated, isCompany, async (req, res
       next(error)
   }
 })
+
+
+//GET "/api/profile/tutorial-list-admin"=> Renderiza lista de Hackatones creados por una compañia
+router.get("/tutorial-list-admin", isAuthenticated, isAdmin, async (req, res, next) => {
+  try {
+    const foundUser = await User.findById(req.payload._id);
+    console.log(foundUser)
+    const response = await Tutorial.find({owner: foundUser._id})
+    res.json(response);
+  } catch (error) {
+      next(error)
+  }
+})
+
+
 
 module.exports = router;
