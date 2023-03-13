@@ -10,7 +10,7 @@ router.post("/signup", async (req, res, next) => {
   const { email, password, username, comunidadAutonoma, level, role } = req.body;
 
   // VALIDACIONES
-  if (!email || !password) {
+  if (!email || !password || !comunidadAutonoma || !level || !role) {
     res.status(400).json({ errorMessage: "Los campos deben estar llenos" });
     return;
   }
