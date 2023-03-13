@@ -19,7 +19,7 @@ const Tutorial = require("../models/Tutorial.model");
 
 router.get("/hackaton-list", isAuthenticated, async (req, res, next) => {
     try {
-        const response = await Hackaton.find()
+        const response = await Hackaton.findById("userId")
         res.json(response)
     } catch (error) {
         next(error)

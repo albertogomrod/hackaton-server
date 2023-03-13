@@ -8,7 +8,7 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_SECRET,
 });
 
-const profileImg = new CloudinaryStorage({
+const storage = new CloudinaryStorage({
   cloudinary,
   params: {
     allowed_formats: ["jpg", "jpge", "png"],
@@ -17,4 +17,4 @@ const profileImg = new CloudinaryStorage({
   },
 });
 
-module.exports = multer({ profileImg });
+module.exports = multer({ storage });

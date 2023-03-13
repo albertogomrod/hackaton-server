@@ -1,7 +1,9 @@
 const router = require("express").Router();
 const isAuthenticated = require("../middlewares/auth.middlewares");
 const User = require("../models/User.model.js");
+const Hackaton = require("../models/Hackaton.model.js");
 const bcrypt = require("bcryptjs");
+const isCompany= require("../middlewares/company.middlewares")
 
 // PROFILE
 
@@ -54,5 +56,17 @@ router.delete("/delete", isAuthenticated, async (req, res, next) => {
     next(error);
   }
 });
+
+//GET "/api/profile/hackaton-list-company"=> Renderiza lista de Hackatones creados por una compañia
+router.get("/hackaton-list-company", isAuthenticated, isCompany, async (req, res, next) => {
+  try {
+    const foundUser = await User.findById(req.payload._id);
+    console.log(foundUser)
+    const response = await Hackaton.find({owner: foundUser._id})
+    res.json(response);
+  } catch (error) {
+      next(error)
+  }
+})
 
 module.exports = router;
