@@ -130,14 +130,27 @@ router.get("/cercaDeTi", isAuthenticated, async (req, res, next) => {
   }
 });
 
-// PATCH "/api/hackaton/assist" => Añade el id del hackaton al array de hackatones del user
+// PATCH "/api/hackaton/assist/:hackatonId" => Añade el id del hackaton al array de hackatones del user
 
 router.patch("/assist/:hackatonId", isAuthenticated, async (req, res, next) => {
   try {
-    console.log(req.params.hackatonId)
-    const foundUser = await User.findById(req.payload._id);
-    const response = await User.findByIdAndUpdate(foundUser._id, {
-      hackaton: req.params.hackatonId,
+    const response = await User.findByIdAndUpdate(req.payload._id, {
+      $push:
+      {hackaton: req.params.hackatonId}
+    });
+    res.json(response);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// PATCH "/api/hackaton/assist-delete/:hackatonId" => Elimina el id del hackaton al array de hackatones del user
+
+router.patch("/assist-delete/:hackatonId", isAuthenticated, async (req, res, next) => {
+  try {
+    const response = await User.findByIdAndUpdate(req.payload._id, {
+      $pull:
+      {hackaton: req.params.hackatonId}
     });
     res.json(response);
   } catch (error) {
@@ -148,14 +161,12 @@ router.patch("/assist/:hackatonId", isAuthenticated, async (req, res, next) => {
 // GET "/api/hackaton/assist" => Renderiza los hackatones a los que vas asistir
 router.get("/assist", isAuthenticated, async (req, res, next) => {
   try {
-    const foundUser = await User.findById(req.payload._id);
-    const response = await User.find({
-      hackaton: foundUser.hackaton,
-    });
-    res.json(response);
+    const response = await User.findById(req.payload._id).populate("hackaton");
+    res.json(response.hackaton);
   } catch (error) {
     next(error);
   }
 });
+
 
 module.exports = router;
