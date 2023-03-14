@@ -6,11 +6,11 @@ const router = require("express").Router();
 
 //POST "/api/auth/signup"=> Registrar al usuario en la BBDD
 router.post("/signup", async (req, res, next) => {
-  const { email, password, username, comunidadAutonoma, level, role } =
+  const { email, password, username, comunidadAutonoma, level, role, tech } =
     req.body;
 
   // VALIDACIONES
-  if (!email || !password || !comunidadAutonoma || !level || !role) {
+  if (!email || !password || !comunidadAutonoma || !level || !role || !tech) {
     res.status(400).json({ errorMessage: "Los campos deben estar llenos" });
     return;
   }
@@ -52,6 +52,7 @@ router.post("/signup", async (req, res, next) => {
       comunidadAutonoma,
       level,
       role,
+      tech
     });
     res.status(201).json("Usuario creado");
   } catch (error) {
@@ -65,7 +66,7 @@ router.post("/login", async (req, res, next) => {
   const { username, password } = req.body;
 
   // VALIDACIONES
-  if (username.length === 0 || password.length === 0) {
+  if (!username || !password) {
     res.status(411).json({ errorMessage: "Los campos deben estar llenos" });
     return;
   }

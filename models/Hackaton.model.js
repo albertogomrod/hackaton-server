@@ -44,6 +44,12 @@ const hackatonSchema = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "user",
     },
+
+    coordinates:[
+      {
+        type: Number,
+      }
+    ],
   },
   {
     timestamp: true,
