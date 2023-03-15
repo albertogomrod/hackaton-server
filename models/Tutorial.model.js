@@ -1,14 +1,9 @@
 const { Schema, model, mongoose } = require("mongoose");
-
+const tecnologias = require("../utils/tecnologias.js");
 
 // TODO: Please make sure you edit the User model to whatever makes sense in this case
 const tutorialSchema = new Schema({
   title: {
-    type: String,
-    required: true,
-  },
-
-  image: {
     type: String,
     required: true,
   },
@@ -18,17 +13,12 @@ const tutorialSchema = new Schema({
     required: true,
   },
 
-  tech: [
-    {
-      type: String,
-    },
-  ],
+  tech: {
+    type: String,
+    enum: tecnologias,
+  },
 
-  links: [
-    {
-      type: String,
-    },
-  ],
+  videoUrl: String,
 
   owner: {
     type: mongoose.Schema.Types.ObjectId,

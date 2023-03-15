@@ -8,7 +8,7 @@ const User = require("../models/User.model.js");
 
 // POST "/api/hackaton/create" => Crear nuevos hackatones.
 router.post("/create", isAuthenticated, isCompany, async (req, res, next) => {
-  const { title, date, comunidadAutonoma, photo, description, tech, level } =
+  const { title, date, comunidadAutonoma, photo, description, tech, level, coordinates } =
     req.body;
 
   // VALIDACIONES
@@ -19,7 +19,8 @@ router.post("/create", isAuthenticated, isCompany, async (req, res, next) => {
     !photo ||
     !description ||
     !tech ||
-    !level
+    !level ||
+    !coordinates
   ) {
     res.status(400).json({ errorMessage: "Los campos deben estar llenos" });
     return;
@@ -48,6 +49,7 @@ router.post("/create", isAuthenticated, isCompany, async (req, res, next) => {
       tech,
       level,
       owner: req.payload._id,
+      coordinates
     });
 
     // res.json(response)
@@ -167,6 +169,20 @@ router.get("/assist", isAuthenticated, async (req, res, next) => {
     next(error);
   }
 });
+
+// GET "/api/hackaton/map" => Renderiza el mapa con los próximos hackatones.
+
+router.get("/map", isAuthenticated, async (req, res, next) => {
+  try {
+    const response = await Hackaton.find({
+      coordinates: coordinates,
+    });
+    console.log(response)
+      res.json(response)
+  } catch (error) {
+      next(error)
+  }
+})
 
 
 module.exports = router;

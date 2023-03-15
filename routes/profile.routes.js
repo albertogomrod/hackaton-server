@@ -25,7 +25,7 @@ router.patch("/edit", isAuthenticated, async (req, res, next) => {
     username,
     email,
     profilephoto,
-    comunidadesAutonomas,
+    comunidadAutonoma,
     password,
     tech,
   } = req.body;
@@ -37,7 +37,7 @@ router.patch("/edit", isAuthenticated, async (req, res, next) => {
       username,
       email,
       profilephoto,
-      comunidadesAutonomas,
+      comunidadAutonoma,
       password: hashPassword,
       tech,
     });

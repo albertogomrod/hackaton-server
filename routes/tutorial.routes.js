@@ -8,10 +8,10 @@ const Tutorial = require("../models/Tutorial.model");
 // POST "/api/tutorial/create"=> Crear nuevo tutorial. Tutorial.create()
 
 router.post("/create", isAuthenticated, isAdmin, async (req, res, next) => {
-  const { title, image, description, tech, links, owner } = req.body;
+  const { title, description, tech, videoUrl, owner } = req.body;
 
   // VALIDACIONES
-  if (!title || !date || !image || !description || !tech || !level || !links) {
+  if (!title || !description || !tech || !videoUrl) {
     res.status(400).json({ errorMessage: "Los campos deben estar llenos" });
     return;
   }
@@ -19,10 +19,9 @@ router.post("/create", isAuthenticated, isAdmin, async (req, res, next) => {
   try {
     const response = await Tutorial.create({
       title,
-      image,
       description,
       tech,
-      links,
+      videoUrl,
       owner: req.payload._id,
     });
     res.status(200).json();
@@ -39,15 +38,14 @@ router.patch(
   isAdmin,
   async (req, res, next) => {
     const { tutorialId } = req.params;
-    const { title, image, description, tech, links, owner } = req.body;
+    const { title, description, tech, videoUrl, owner } = req.body;
 
     try {
       await Tutorial.findByIdAndUpdate(tutorialId, {
         title,
-        image,
         description,
         tech,
-        links,
+        videoUrl,
         owner: req.payload._id,
       });
       res.status(200).json();
