@@ -5,7 +5,7 @@ const Tutorial = require("../models/Tutorial.model");
 
 //TUTORIALES
 
-// POST "/api/tutorial/create"=> Crear nuevo tutorial. Tutorial.create()
+// POST "/api/tutorial/create"=> Crear nuevo tutorial
 
 router.post("/create", isAuthenticated, isAdmin, async (req, res, next) => {
   const { title, description, tech, videoUrl, owner } = req.body;
@@ -30,7 +30,7 @@ router.post("/create", isAuthenticated, isAdmin, async (req, res, next) => {
   }
 });
 
-// PATCH "/api/tutorial/edit/:tutorialId" => Editar nuevo tutoriales
+// PATCH "/api/tutorial/edit/:tutorialId" => Editar tutorial
 
 router.patch(
   "/edit/:tutorialId",
@@ -74,7 +74,7 @@ router.delete(
   }
 );
 
-// GET "/api/tutorial/details/:tutorialId" => Renderiza un solo tutorial findOneById()
+// GET "/api/tutorial/details/:tutorialId" => Renderiza un solo tutorial
 
 router.get("/details/:tutorialId", isAuthenticated, async (req, res, next) => {
   const { tutorialId } = req.params;

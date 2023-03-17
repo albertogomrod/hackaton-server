@@ -6,10 +6,18 @@ const User = require("../models/User.model.js");
 
 // HACKATONES
 
-// POST "/api/hackaton/create" => Crear nuevos hackatones.
+// POST "/api/hackaton/create" => Crear nuevos hackatones
 router.post("/create", isAuthenticated, isCompany, async (req, res, next) => {
-  const { title, date, comunidadAutonoma, photo, description, tech, level, coordinates } =
-    req.body;
+  const {
+    title,
+    date,
+    comunidadAutonoma,
+    photo,
+    description,
+    tech,
+    level,
+    coordinates,
+  } = req.body;
 
   // VALIDACIONES
   if (
@@ -30,12 +38,10 @@ router.post("/create", isAuthenticated, isCompany, async (req, res, next) => {
   const fechaActual = Date.parse(new Date());
 
   if (fechaInput < fechaActual) {
-    res
-      .status(409)
-      .json({
-        errorMessage:
-          "La fecha introducida no puede ser anterior a la fecha actual",
-      });
+    res.status(409).json({
+      errorMessage:
+        "La fecha introducida no puede ser anterior a la fecha actual",
+    });
     return;
   }
 
@@ -49,7 +55,7 @@ router.post("/create", isAuthenticated, isCompany, async (req, res, next) => {
       tech,
       level,
       owner: req.payload._id,
-      coordinates
+      coordinates,
     });
 
     // res.json(response)
@@ -59,7 +65,7 @@ router.post("/create", isAuthenticated, isCompany, async (req, res, next) => {
   }
 });
 
-// PATCH "/api/hackaton/edit/:hackatonId" => Editar hackatones.
+// PATCH "/api/hackaton/edit/:hackatonId" => Editar hackatones
 
 router.patch(
   "/edit/:hackatonId",
@@ -106,7 +112,7 @@ router.delete(
   }
 );
 
-// GET "/api/hackaton/details/:hackatonId" => Renderiza un solo hackaton.
+// GET "/api/hackaton/details/:hackatonId" => Renderiza un solo hackaton
 router.get("/details/:hackatonId", isAuthenticated, async (req, res, next) => {
   const { hackatonId } = req.params;
 
@@ -118,11 +124,10 @@ router.get("/details/:hackatonId", isAuthenticated, async (req, res, next) => {
   }
 });
 
-// GET "/api/hackaton/cercaDeTi" => Renderiza los hackatones que están en la misma C.A. del usuario.
+// GET "/api/hackaton/cercaDeTi" => Renderiza los hackatones que están en la misma C.A. del usuario
 router.get("/cercaDeTi", isAuthenticated, async (req, res, next) => {
   try {
     const foundUser = await User.findById(req.payload._id);
-    console.log(foundUser);
     const response = await Hackaton.find({
       comunidadAutonoma: foundUser.comunidadAutonoma,
     });
@@ -137,8 +142,7 @@ router.get("/cercaDeTi", isAuthenticated, async (req, res, next) => {
 router.patch("/assist/:hackatonId", isAuthenticated, async (req, res, next) => {
   try {
     const response = await User.findByIdAndUpdate(req.payload._id, {
-      $push:
-      {hackaton: req.params.hackatonId}
+      $push: { hackaton: req.params.hackatonId },
     });
     res.json(response);
   } catch (error) {
@@ -148,17 +152,20 @@ router.patch("/assist/:hackatonId", isAuthenticated, async (req, res, next) => {
 
 // PATCH "/api/hackaton/assist-delete/:hackatonId" => Elimina el id del hackaton al array de hackatones del user
 
-router.patch("/assist-delete/:hackatonId", isAuthenticated, async (req, res, next) => {
-  try {
-    const response = await User.findByIdAndUpdate(req.payload._id, {
-      $pull:
-      {hackaton: req.params.hackatonId}
-    });
-    res.json(response);
-  } catch (error) {
-    next(error);
+router.patch(
+  "/assist-delete/:hackatonId",
+  isAuthenticated,
+  async (req, res, next) => {
+    try {
+      const response = await User.findByIdAndUpdate(req.payload._id, {
+        $pull: { hackaton: req.params.hackatonId },
+      });
+      res.json(response);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 // GET "/api/hackaton/assist" => Renderiza los hackatones a los que vas asistir
 router.get("/assist", isAuthenticated, async (req, res, next) => {
@@ -170,19 +177,17 @@ router.get("/assist", isAuthenticated, async (req, res, next) => {
   }
 });
 
-// GET "/api/hackaton/map" => Renderiza el mapa con los próximos hackatones.
+// GET "/api/hackaton/map" => Renderiza el mapa con los próximos hackatones
 
 router.get("/map", isAuthenticated, async (req, res, next) => {
   try {
     const response = await Hackaton.find({
       coordinates: coordinates,
     });
-    console.log(response)
-      res.json(response)
+    res.json(response);
   } catch (error) {
-      next(error)
+    next(error);
   }
-})
-
+});
 
 module.exports = router;

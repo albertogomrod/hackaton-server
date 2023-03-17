@@ -14,7 +14,6 @@ router.post("/signup", async (req, res, next) => {
     res.status(400).json({ errorMessage: "Los campos deben estar llenos" });
     return;
   }
-  // - Validar que la contraseña sea suficientemente fuerte
   const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
   if (!passwordRegex.test(req.body.password)) {
     res.status(400).json({
@@ -23,13 +22,10 @@ router.post("/signup", async (req, res, next) => {
     });
     return;
   }
-  // - Validar que el correo electrónico tenga el formato correcto
 
   try {
     const foundUserName = await User.findOne({ username });
     const foundEmail = await User.findOne({ email });
-
-    // - Validar que el usuario no esté duplicado
 
     if (foundUserName !== null) {
       res
@@ -52,7 +48,7 @@ router.post("/signup", async (req, res, next) => {
       comunidadAutonoma,
       level,
       role,
-      tech
+      tech,
     });
     res.status(201).json("Usuario creado");
   } catch (error) {
@@ -87,14 +83,12 @@ router.post("/login", async (req, res, next) => {
       return;
     }
 
-    // payload es el contenido del Token que identifica al usuario
     const payload = {
       _id: foundUser._id,
       username: foundUser.username,
       role: foundUser.role,
     };
 
-    // generamos el token
     const authToken = jwt.sign(payload, process.env.TOKEN_SECRET, {
       algorithm: "HS256",
       expiresIn: "2d",
@@ -108,8 +102,6 @@ router.post("/login", async (req, res, next) => {
 //GET "api/auth/verify"=> Verifica si el usuario esta activo o no.
 
 router.get("/verify", isAuthenticated, (req, res, next) => {
-  // !! SOLO PODEMOS ACCEDER A REQ.PAYLOAD PASANDO EL MIDDLEWARE
-  console.log(req.payload);
   res.status(200).json(req.payload);
 });
 

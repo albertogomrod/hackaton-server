@@ -20,8 +20,6 @@ const isAuthenticated = expressjwt({
         .json({ errorMessage: "Este usuario no tiene un token válido" });
       return null;
     }
-
-    console.log("El token existe y tiene tipo correcto");
     return token;
   },
 });

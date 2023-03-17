@@ -2,13 +2,13 @@ const router = require("express").Router();
 const isAuthenticated = require("../middlewares/auth.middlewares");
 const User = require("../models/User.model.js");
 const Hackaton = require("../models/Hackaton.model.js");
-const Tutorial= require("../models/Tutorial.model")
+const Tutorial = require("../models/Tutorial.model");
 const bcrypt = require("bcryptjs");
-const isCompany= require("../middlewares/company.middlewares")
-const isAdmin= require("../middlewares/admin.middlewares")
+const isCompany = require("../middlewares/company.middlewares");
+const isAdmin = require("../middlewares/admin.middlewares");
 // PROFILE
 
-// GET "/api/profile/:id" => Renderiza un perfil de usuario. findById()
+// GET "/api/profile/:id" => Renderiza un perfil de usuario
 
 router.get("/", isAuthenticated, async (req, res, next) => {
   try {
@@ -19,16 +19,10 @@ router.get("/", isAuthenticated, async (req, res, next) => {
   }
 });
 
-// PATH "/api/profile/edit/:id" => Actualiza perfil de usuario findByIdAndUpdate()
+// PATH "/api/profile/edit/:id" => Actualiza perfil de usuario
 router.patch("/edit", isAuthenticated, async (req, res, next) => {
-  const {
-    username,
-    email,
-    profilephoto,
-    comunidadAutonoma,
-    password,
-    tech,
-  } = req.body;
+  const { username, email, profilephoto, comunidadAutonoma, password, tech } =
+    req.body;
   try {
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(password, salt);
@@ -47,7 +41,7 @@ router.patch("/edit", isAuthenticated, async (req, res, next) => {
   }
 });
 
-// DELETE "/api/profile/delete/:id" => Elimina un perfil de usuario. findByIdAndDelete()
+// DELETE "/api/profile/delete/:id" => Elimina un perfil de usuario
 
 router.delete("/delete", isAuthenticated, async (req, res, next) => {
   try {
@@ -59,30 +53,35 @@ router.delete("/delete", isAuthenticated, async (req, res, next) => {
 });
 
 //GET "/api/profile/hackaton-list-company"=> Renderiza lista de Hackatones creados por una compañia
-router.get("/hackaton-list-company", isAuthenticated, isCompany, async (req, res, next) => {
-  try {
-    const foundUser = await User.findById(req.payload._id);
-    console.log(foundUser)
-    const response = await Hackaton.find({owner: foundUser._id})
-    res.json(response);
-  } catch (error) {
-      next(error)
+router.get(
+  "/hackaton-list-company",
+  isAuthenticated,
+  isCompany,
+  async (req, res, next) => {
+    try {
+      const foundUser = await User.findById(req.payload._id);
+      const response = await Hackaton.find({ owner: foundUser._id });
+      res.json(response);
+    } catch (error) {
+      next(error);
+    }
   }
-})
-
+);
 
 //GET "/api/profile/tutorial-list-admin"=> Renderiza lista de Hackatones creados por una compañia
-router.get("/tutorial-list-admin", isAuthenticated, isAdmin, async (req, res, next) => {
-  try {
-    const foundUser = await User.findById(req.payload._id);
-    console.log(foundUser)
-    const response = await Tutorial.find({owner: foundUser._id})
-    res.json(response);
-  } catch (error) {
-      next(error)
+router.get(
+  "/tutorial-list-admin",
+  isAuthenticated,
+  isAdmin,
+  async (req, res, next) => {
+    try {
+      const foundUser = await User.findById(req.payload._id);
+      const response = await Tutorial.find({ owner: foundUser._id });
+      res.json(response);
+    } catch (error) {
+      next(error);
+    }
   }
-})
-
-
+);
 
 module.exports = router;
