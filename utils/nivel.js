@@ -1,8 +1,3 @@
-const nivel = [
-    "Trainee",
-    "Junior",
-    "Mid-Senior",
-    "Senior"
-]
+const nivel = ["Trainee", "Junior", "Mid-Senior", "Senior"];
 
-module.exports = nivel
+module.exports = nivel;
