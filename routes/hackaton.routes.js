@@ -190,4 +190,16 @@ router.get("/map", isAuthenticated, async (req, res, next) => {
   }
 });
 
+// GET "api/hackaton/usersAssit/:hackatonId" => Usuarios que van a asistir a ese hackaton
+
+router.get("/usersAssist/:hackatonId", isAuthenticated, async (req, res, next) => {
+  try {
+    const { hackatonId } = req.params
+    const response = await User.find( {hackaton: { $in: [hackatonId] } } )
+    res.json(response);
+  } catch (error) {
+    next(error);
+  }
+})
+
 module.exports = router;
