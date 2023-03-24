@@ -41,6 +41,9 @@ router.patch("/edit", isAuthenticated, async (req, res, next) => {
   }
 });
 
+// PATH "api/profile/editPassword/:id" => Actualiza la contraseña del usuario
+router.patch("/editPassword")
+
 // DELETE "/api/profile/delete/:id" => Elimina un perfil de usuario
 
 router.delete("/delete", isAuthenticated, async (req, res, next) => {
